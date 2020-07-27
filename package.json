@@ -10,6 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "cep-promise": "^3.0.9",
     "react": "16.13.1",
     "react-native": "0.63.2"
   },
@@ -26,3 +28,4 @@
   "jest": {
     "preset": "react-native"
   }
+}

@@ -1,114 +1,132 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
-import React from 'react';
+
+import React, {useState, useRef} from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity
+
 } from 'react-native';
+import cep from  'cep-promise';
+import api from './src/services/api'
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+function App(){
+  const[cep_, setCep] = useState('');
+  const[response, setResponse] = useState([]);
+  const inputRef = useRef(null);
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+  cep(5010000)
+  .then(console.log)
+   
+   function getCep(){
+    try{
+      const consulta = cep(`${cep_}`)
+      console.log(consulta)
+      alert(consulta.data)
+      
+    }catch(error){
+      console.log(`ERROR ${error}`)
+
+    }
+   
+      return;
+  }
+  function cleanInput(){
+    setCep('')
+    inputRef.current.focus();
+  }
+  return(
+    <View style={styles.container}>
+      <Text>Search any Cep</Text>
+      <TextInput style={styles.input}
+      value={cep_}
+      onChangeText = {(text)=> setCep(text)}
+      keyboardType="numeric"
+      ref={inputRef}
+    
+      />
+      <View style={styles.botao}>
+      <View style={styles.alignButton}>
+      
+
+      <View>
+      <TouchableOpacity style={[styles.button,{    backgroundColor: '#5C7BF8'}]}
+      title='Search'
+      onPress={getCep}>
+
+        <Text style={{color:'#FFF', textAlign: 'center'}}>Search</Text>
+      </TouchableOpacity>
+
+      </View>
+      <View>
+      <TouchableOpacity style={[styles.button, {backgroundColor: 'red' }]}
+      title='Clean Up'
+      onPress={cleanInput}
+      color='danger'
+      
+      >
+
+        
+
+
+        <Text style={{color:'#FFF'}}>Clean Up</Text>
+         
+      </TouchableOpacity>
+      </View>
+
+    </View>
+
+    </View>
+
+  
+    <View style={{}}>
+      <Text>
+        {response.state}
+      </Text>
+
+    </View>
+
+    </View>
+  )
+}
 
 export default App;
+
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 1
+  },
+  input:{
+    borderWidth:1, 
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 5,
+    borderRadius: 15,
+    borderColor: '#94A0D2'
+  },
+  alignButton:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    alignItems: 'center'
+  },
+  button:{
+    height: 50,
+    alignItems:'center',
+    padding: 15,
+    borderRadius: 10,
+  },
+
+
+
+  botao:{
+    alignItems: 'center', 
+    justifyContent: 'center',
+
+  }
+})
