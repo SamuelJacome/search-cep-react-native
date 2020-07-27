@@ -41,7 +41,7 @@ function App(){
   }
   return(
     <View style={styles.container}>
-      <Text>Search any Cep</Text>
+      <Text style={{textAlign: 'center', fontSize: 25}}>Search any Cep</Text>
       <TextInput style={styles.input}
       value={cep_}
       onChangeText = {(text)=> setCep(text)}
@@ -49,7 +49,6 @@ function App(){
       ref={inputRef}
     
       />
-      <View style={styles.botao}>
       <View style={styles.alignButton}>
       
 
@@ -80,12 +79,11 @@ function App(){
 
     </View>
 
-    </View>
 
   
-    <View style={{}}>
+    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
       <Text>
-        {response.state}
+        olá{response.state}
       </Text>
 
     </View>
