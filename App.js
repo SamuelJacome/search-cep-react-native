@@ -10,24 +10,21 @@ import {
   TouchableOpacity
 
 } from 'react-native';
-import cep from  'cep-promise';
 import api from './src/services/api'
 
 
 function App(){
-  const[cep_, setCep] = useState('');
-  const[response, setResponse] = useState([]);
+  const[cep, setCep] = useState(null);
   const inputRef = useRef(null);
 
-  cep(5010000)
-  .then(console.log)
+
    
-   function getCep(){
+   async function getCep(){
     try{
-      const consulta = cep(`${cep_}`)
-      console.log(consulta)
-      alert(consulta.data)
-      
+      const response = await api.get(`/${cep}/json`)
+      console.log(response)
+      setCep(response.data)
+      return;
     }catch(error){
       console.log(`ERROR ${error}`)
 
@@ -43,7 +40,7 @@ function App(){
     <View style={styles.container}>
       <Text style={{textAlign: 'center', fontSize: 25}}>Search any Cep</Text>
       <TextInput style={styles.input}
-      value={cep_}
+      value={cep}
       onChangeText = {(text)=> setCep(text)}
       keyboardType="numeric"
       ref={inputRef}
@@ -80,13 +77,36 @@ function App(){
     </View>
 
 
-  
-    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-      <Text>
-        olá{response.state}
-      </Text>
+    {cep && 
+    
+    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 100}}>
+    <Text style={{fontSize: 22}}>
+      CEP: {cep.cep}
+    </Text>
+
+    <Text style={{fontSize: 22}}>
+      Logadouro: {cep.logradouro}
+    </Text>
+
+    <Text style={{fontSize: 22}}>
+      Bairro: {cep.bairro}
+    </Text>
+
+    <Text style={{fontSize: 22}}>
+      Cidade: {cep.localidade}
+    </Text>
+
+    <Text style={{fontSize: 22}}>
+      Estado: {cep.uf}
+    </Text>
 
     </View>
+    
+    
+    
+    
+    }
+ 
 
     </View>
   )
